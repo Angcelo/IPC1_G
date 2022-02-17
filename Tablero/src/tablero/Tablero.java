@@ -5,6 +5,7 @@
 package tablero;
 
 import java.util.Scanner;
+import java.util.Random;
 
 /**
  *
@@ -32,18 +33,16 @@ public class Tablero {
             System.out.print("Desea agregar comida al tablero, 's' para si");
             char respuesta = sc.next().charAt(0);
             if (respuesta == 's') {
-                System.out.print("Introduzca la coordenada en X");
-                int coorX = sc.nextInt();
-                System.out.println("Introduzca la coordenada en Y");
-                int coorY = sc.nextInt();
-                if (coorX >= 0 && coorY >= 0 && coorX <= valor && coorY <= valor) {
-                    if (tablero[coorX][coorY] == ' ') {
-                        tablero[coorX][coorY] = '#';
-                    } else {
-                        System.out.println("La coordenada que introdujo ya se encuentra ocupada");
-                    }
-                } else {
-                    System.out.println("Alguna coordenada que introdujo no es encuentra en el rango del tablero");
+                Random rnd = new Random();
+                while (true) {
+                    int coorX = rnd.nextInt(valor + 1) + 1;
+                    int coorY = rnd.nextInt(valor + 1) + 1;
+                    if (coorX >= 0 && coorY >= 0 && coorX <= valor && coorY <= valor) {
+                        if (tablero[coorX][coorY] == ' ') {
+                            tablero[coorX][coorY] = '#';
+                            break;
+                        } 
+                    } 
                 }
             } else {
                 break;
