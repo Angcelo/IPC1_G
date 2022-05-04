@@ -162,7 +162,8 @@ def registrarPrestamo():
         "id_loan": id,
         "id_usuario": body['id_user'],
         "id_book": body['id_book'],
-        "date_inital": fecha.date()
+        "date_inital": fecha.date(),
+        "penalty_fee": 0
     })
     return jsonify({"status": 200, "msg": "Prestamos realizado"})
 
@@ -177,6 +178,7 @@ def calcularMulta():
                 Prestamos[i]['date_inital'] = now.date()
                 multa = multa - 7
                 if multa > 0:
+                    Prestamos[i]['penalty_fee'] = multa * 7.00
                     return jsonify({
                         "id_loan": Prestamos[i]['id_loan'],
                         "book_title": "Ya lo buscamos",
