@@ -1,3 +1,4 @@
+from audioop import mul
 from datetime import datetime
 from flask import Flask, request, jsonify
 
@@ -101,10 +102,39 @@ def crearLibro():
     return jsonify({"status": 400, "msg": "Solicitud incorrecta"})
 
 
+@app.route('/book', methods=["PUT"])
+def actualizarLibro():
+    body = request.get_json()
+    if body is None:
+        return jsonify({"status": 400, "msg": "Solicitud incorrecta"})
+    if body['id_book'] == None:
+        return jsonify({"status": 400, "msg": "Solicitud incorrecta"})
+    for i in range(len(Books)):
+        if Books[i]['id_book'] == body['id_book']:
+            Books.remove(Books[i])
+            Books.append({
+                "id_book": body['id_book'],
+                'book_title': body['book_title'],
+                'book_type': body['book_type'],
+                'auhor': body['auhor'],
+                'book_count': body['book_count'],
+                'book_aviable': body['book_aviable'],
+                'book_year': body['book_year'],
+                'book_editorial': body['book_editorial']
+            })
+            return jsonify({"status": 200, "msg": "Libro actualizado"})
+    return jsonify({"status": 400, "msg": "Libro no encontrado"})
+
+
+@app.route('/book', methods=["GET"])
+def verLibros():
+    return jsonify(Books)
 # {
 #   "id_book": 1
 #   "id_user": 1
 # }
+
+
 @app.route('/loan', methods=["POST"])
 def registrarPrestamo():
     body = request.get_json()
@@ -125,11 +155,39 @@ def registrarPrestamo():
     id = len(Prestamos) + 1
     now = datetime.now()
     print(now.date())
+    if body['date'] == None:
+        return jsonify({"status": 400, "msg": "Fecha no ingresada"})
+    fecha = datetime.strptime(body['date'], '%Y-%m-%d')
     Prestamos.append({
         "id_loan": id,
         "id_usuario": body['id_user'],
         "id_book": body['id_book'],
-        "date_inital": now.date() 
+        "date_inital": fecha.date()
     })
-    return jsonify({"status": 200, "msg": "Prestamos realizado"}) 
+    return jsonify({"status": 200, "msg": "Prestamos realizado"})
 
+@app.route('/loan', methods=["PUT"])
+def calcularMulta():
+    body = request.get_json()
+    for i in range(len(Prestamos)):
+        if Prestamos[i]['id_loan'] == body['id_loan']:
+            now = datetime.now()
+            if now.date() > Prestamos[i]['date_inital']:
+                multa = (now.date() - Prestamos[i]['date_inital']).days
+                Prestamos[i]['date_inital'] = now.date()
+                multa = multa - 7
+                if multa > 0:
+                    return jsonify({
+                        "id_loan": Prestamos[i]['id_loan'],
+                        "book_title": "Ya lo buscamos",
+                        "loan_date": Prestamos[i]['date_inital'],
+                        "return_date": now.date(),
+                        "user_display_name": "Ya lo buscamos",
+                        "penalty_fee":  multa*7.00
+                    })
+                return jsonify({"status": 200, "msg": "No hay multa"})
+            return jsonify({"status": 200, "msg": "No hay multa"})
+    return jsonify({"status": 400, "msg": "Prestamo no encontrado"})
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
