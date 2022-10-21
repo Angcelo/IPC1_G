@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const app = express();
 const fs = require('fs');
 
+const usuarios = require('./usuarios.json');
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,6 +39,35 @@ app.post("/", (req, res) => {
     file.end();
 })
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.post("/login",(req,res)=>{
+    console.log(req.body);
+    const {nombre, contrasenna} = req.body; 
+    let file = fs.readFileSync('./usuarios.json', 'utf8');
+    let usuarioJS = JSON.parse(file)
+    for(let i = 0; i < usuarioJS.length; i++){
+        if(usuarioJS[i].nombre.toLowerCase() == nombre.toLowerCase() && usuarioJS[i].contrasenna == contrasenna){
+            res.status(200).json({
+                mensaje: "Bienvenido",
+                data: usuarioJS[i].nombre
+            })
+            return;
+        } 
+    }
+    res.status(401).json({
+        mensaje: "Usuario o contraseña incorrectos",
+        data: null
+    })
+})
+
+app.get("/usuarios", (req, res) => {
+    let file = fs.readFileSync('./usuarios.json', 'utf8');
+    let usuarioJS = JSON.parse(file)
+    res.status(200).json({
+        mensaje: "Usuarios",
+        data: usuarioJS
+    })
+})
+
+app.listen(3030, () => {
+    console.log("Servidor corriendo en el puerto 3030");
 })
