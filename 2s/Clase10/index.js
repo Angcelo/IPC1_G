@@ -68,6 +68,43 @@ app.get("/usuarios", (req, res) => {
     })
 })
 
+app.get("/jugadores/region/:region", (req, res) => {})
+app.get("/jugadores/seleccion/:seleccion", (req, res) => {})
+app.get("/jugadores/nombre/:nombre", (req, res) => {})
+
+app.get("/usuarios/:nombre", (req, res) => {
+    const { nombre } = req.params;
+    console.log(nombre)
+    let file = fs.readFileSync('./usuarios.json', 'utf8');
+    let usuarioJS = JSON.parse(file)
+    let list = [];
+    for(let i = 0; i < usuarioJS.length; i++){
+        if(usuarioJS[i].nombre.toLowerCase().includes(nombre.toLowerCase())){
+            list.push(usuarioJS[i]);
+        } 
+    }
+    res.status(200).json({
+        mensaje: "Busqueda realizada",
+        data: list
+    })
+})
+
+app.get("/usuarios/contrasenna/:valor", (req, res) => {
+    const { valor } = req.params;
+    let file = fs.readFileSync('./usuarios.json', 'utf8');
+    let usuarioJS = JSON.parse(file)
+    let list = [];
+    for(let i = 0; i < usuarioJS.length; i++){
+        if(usuarioJS[i].contrasenna.toLowerCase().includes(valor.toLowerCase())){
+            list.push(usuarioJS[i]);
+        } 
+    }
+    res.status(200).json({
+        mensaje: "Busqueda realizada",
+        data: list
+    })
+})
+
 app.listen(3030, () => {
     console.log("Servidor corriendo en el puerto 3030");
 })

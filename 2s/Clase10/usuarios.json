@@ -1,15 +1,18 @@
 [
     {
         "nombre": "Jose",
-        "contrasenna": "1234"
+        "contrasenna": "1234",
+        "background": "#FF0000"
     },
     {
         "nombre": "Maria",
-        "contrasenna": "1234"
+        "contrasenna": "1234",
+        "background": "#00FF00"
     },
     {
         "nombre": "Pedro",
-        "contrasenna": "1234"   
+        "contrasenna": "1234",  
+        "background": "#0000FF"
     },
     {
         "nombre": "Jose",
