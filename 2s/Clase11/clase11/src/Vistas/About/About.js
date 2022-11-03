@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { Card, Container, Row, Col, InputGroup, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, InputGroup, Form, Button } from "react-bootstrap";
 import { FaSearch } from 'react-icons/fa';
+import Carta from "./Carta";
+import Mensajes from "./Mensajes";
 
 function About() {
 
@@ -8,6 +10,10 @@ function About() {
     const [busqueda, setBusqueda] = useState('');
     const [filtrados, setFiltrados] = useState('');
     const [backgroundColor, setBackgroundColor] = useState('white');
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         fetch('http://localhost:3030/usuarios').then(res => {
@@ -24,6 +30,14 @@ function About() {
         })
     }, []);
 
+    useEffect(() => {
+        console.log("Busqueda: " + busqueda);
+    }, [busqueda]);
+
+    const onClick = () => {
+        setBackgroundColor('red');
+    }
+
     const handleChange = (e) => {
         switch (filtrados) {
             case '1':
@@ -36,7 +50,7 @@ function About() {
                 }).then(data => {
                     console.log(data);
                     setUsuarios(data.data);
-                    if(busqueda === ''){ 
+                    if (busqueda === '') {
                         setBackgroundColor('white');
                     } else if (data.data.length === 0) {
                         setBackgroundColor('white');
@@ -79,7 +93,9 @@ function About() {
                     <Col>
                         <InputGroup>
                             <Form.Control placeholder="Ingrese nombre"
-                                onChange={(e) => { setBusqueda(e.target.value) }} />
+                                onChange={(e) => {
+                                    setBusqueda(e.target.value);
+                                }} />
                             <Button variant="primary" id='botonBusqueda'
                                 onClick={handleChange}>
                                 <FaSearch></FaSearch>
@@ -103,22 +119,23 @@ function About() {
                     {usuarios && usuarios.map((usuario, index) => {
                         return (
                             <Col key={index}>
-                                <Card style={{ width: '18rem' }}>
-                                    <Card.Body>
-                                        <Card.Img variant="top" src={usuario.Img} />
-                                        <Card.Title>{usuario.nombre} {usuario.apellido}</Card.Title>
-                                        <Card.Text>
-                                            {usuario.contrasenna}
-                                            {usuario.email}
-                                            {usuario.telefono}
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
+                                <Carta
+                                    nombre={usuario.nombre}
+                                    contrasenna={usuario.contrasenna}
+                                    onClick={onClick} />
                             </Col>
                         )
                     })}
                 </Row>
             </Container>
+            <Button variant="primary" onClick={() => {
+                handleShow();
+            }}>Ver Modal</Button>
+            <Mensajes
+                show={show} handleClose={handleClose}
+                titulo="Mensaje de error"
+                mensaje="Por favor espere mientras se soluciona"
+            />
         </Container >
     )
 }

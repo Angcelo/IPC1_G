@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Container, Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Home() {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ function Home() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        fetch('http://localhost:3030/login',{
+        fetch('http://localhost:3030/usuarios/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -27,9 +28,11 @@ function Home() {
             console.log(data);
             localStorage.setItem('nombre', data.data);
             alert("Login correcto");
-            navigate('/about');
+            navigate('/about', {replace: true});
         }).catch(err => {
-            alert(err);
+            toast.error(err, {
+                theme: "colored"
+            });
         })
     }
 

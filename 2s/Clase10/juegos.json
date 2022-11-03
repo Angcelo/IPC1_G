@@ -1,0 +1,11 @@
+{
+    "currentId": 2,
+    "juegos": [
+        {
+            "id": 1,
+            "nombre": "Persona5",
+            "precio": 5.99,
+            "stock": 4
+        }
+    ]
+}

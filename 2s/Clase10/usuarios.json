@@ -1,41 +1,15 @@
-[
-    {
-        "nombre": "Jose",
-        "contrasenna": "1234",
-        "background": "#FF0000"
-    },
-    {
-        "nombre": "Maria",
-        "contrasenna": "1234",
-        "background": "#00FF00"
-    },
-    {
-        "nombre": "Pedro",
-        "contrasenna": "1234",  
-        "background": "#0000FF"
-    },
-    {
-        "nombre": "Jose",
-        "contrasenna": "1234"
-    },
-    {
-        "nombre": "Maria",
-        "contrasenna": "1234"
-    },
-    {
-        "nombre": "Pedro",
-        "contrasenna": "1234"   
-    },
-    {
-        "nombre": "Jose",
-        "contrasenna": "1234"
-    },
-    {
-        "nombre": "Maria",
-        "contrasenna": "1234"
-    },
-    {
-        "nombre": "Pedro",
-        "contrasenna": "1234"   
-    }
-]
+{
+    "currentId": 3,
+    "usuarios": [
+        {
+            "id": 1,
+            "nombre": "Jose",
+            "contrasenna": "1234"
+        },
+        {
+            "id": 2,
+            "nombre": "Persona",
+            "contrasenna": "12345678"
+        }
+    ]
+}

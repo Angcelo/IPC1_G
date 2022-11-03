@@ -3,6 +3,7 @@ import './App.css';
 import { useRoutes } from 'react-router-dom';
 import Home from './Vistas/Home/Home';
 import About from './Vistas/About/About';
+import { ToastContainer } from 'react-toastify';
 
 function Routes() {
   return useRoutes([
@@ -21,6 +22,7 @@ function App() {
   return (
     <div className="App">
       <Routes />
+      <ToastContainer />
     </div>
   );
 }
