@@ -1,12 +1,14 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Container, Row, Col, InputGroup, Form, Button } from "react-bootstrap";
 import { FaSearch } from 'react-icons/fa';
+import { toast } from "react-toastify";
 import Carta from "./Carta";
 import Mensajes from "./Mensajes";
 
 function About() {
 
-    const [usuarios, setUsuarios] = useState('');
+    const [usuarios, setUsuarios] = useState([]);
     const [busqueda, setBusqueda] = useState('');
     const [filtrados, setFiltrados] = useState('');
     const [backgroundColor, setBackgroundColor] = useState('white');
@@ -16,18 +18,27 @@ function About() {
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        fetch('http://localhost:3030/usuarios').then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                return Promise.reject("Fallo en la consulta");
-            }
-        }).then(data => {
-            console.log(data);
-            setUsuarios(data.data);
+        axios.get('http://localhost:3030/usuarios').then(res => {
+            console.log(res.data.data);
+            setUsuarios(res.data.data);
         }).catch(err => {
-            alert(err);
+            console.log(err);
+            toast.error(err, {
+                theme: "colored"
+            });
         })
+        // fetch('http://localhost:3030/usuarios').then(res => {
+        //     if (res.ok) {
+        //         return res.json();
+        //     } else {
+        //         return Promise.reject("Fallo en la consulta");
+        //     }
+        // }).then(data => {
+        //     console.log(data);
+        //     setUsuarios(data.data);
+        // }).catch(err => {
+        //     alert(err);
+        // })
     }, []);
 
     useEffect(() => {
